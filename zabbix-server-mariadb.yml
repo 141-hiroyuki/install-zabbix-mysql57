@@ -1,0 +1,8 @@
+---
+# This playbook deploys the ZABBIX server. 
+- hosts: zabbix-server-mariadb
+  become: yes
+  #remote_user: root
+
+  roles:
+    - zabbix-server-mariadb

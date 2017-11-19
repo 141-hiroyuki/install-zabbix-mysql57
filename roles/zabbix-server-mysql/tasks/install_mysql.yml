@@ -1,0 +1,26 @@
+---
+# Install and setting MySQL
+# Download and install ZABBIX for Centos/RHEL version 7
+- name: Uninstall mariadb
+  yum: name={{ item }} state=absent
+  with_items:
+    - mariadb-libs
+
+- name: Download MySQL Repo - Centos/RHEL 7
+  get_url: url={{ mysqlRepository }} dest=/tmp/mysql.rpm
+#  when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'"
+
+- name: Install MySQL Repo - Centos/RHEL 7
+  yum:
+    name: /tmp/mysql.rpm
+    state: present
+
+- name: Install MySQL
+  yum: name={{ item }} state=latest
+  with_items:
+    - yum-utils
+    - MySQL-python
+    - mysql-community-server
+
+- name: start mysql and enabled
+  service: name=mysqld state=started enabled=yes
